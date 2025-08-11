@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Code Elite - Iris Registration</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .wave-text {
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, #ff6ec4, #7873f5, #4ade80, #facc15, #ec4899);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: waveColor 8s ease-in-out infinite;
+      font-weight: bold;
+    }
+
+    @keyframes waveColor {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .welcome {
+      font-size: 1.6rem;
+    }
+
+    .team-name {
+      font-size: 3.2rem;
+    }
+
+    .college {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    #registerBtn {
+      margin: 20px auto;
+      padding: 15px 40px;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #registerBtn:hover {
+      background-color: #388e3c;
+    }
+
+    #formSection {
+      display: none;
+      margin: 30px auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      background-color: #ffffffcc;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .guidance {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    .btn-small {
+      padding: 8px 15px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+
+    .btn-small:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="wave-text welcome">Hi, Welcome You</div>
+  <div class="wave-text team-name">CODE ELITE</div>
+  <div class="wave-text college">Kalaignar Karunanidhi Institute of Technology</div>
+
+  <button id="registerBtn">Register</button>
+
+  <div id="formSection">
+    <h2>Add Personal Details</h2>
+    <form id="registerForm" method="POST" enctype="multipart/form-data" action="/register">
+      <label for="name">Name:</label>
+      <input type="text" name="name" required />
+
+      <label for="age">Age:</label>
+      <input type="number" name="age" id="age" required />
+
+      <label for="dob">Date of Birth:</label>
+      <input type="date" name="dob" required />
+
+      <label for="phone">Phone Number:</label>
+      <input type="text" name="phone" id="phone" required />
+      <button type="button" class="btn-small" onclick="sendOTP()">Send OTP</button>
+
+      <label for="otp">Enter OTP:</label>
+      <input type="text" name="otp" id="otp" required />
+      <button type="button" class="btn-small" onclick="verifyOTP()">Verify OTP</button>
+      <p id="otpStatus" style="color: green;"></p>
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" required />
+
+      <label for="address">Address:</label>
+      <input type="text" name="address" required />
+
+      <label for="occupation">Occupation:</label>
+      <select name="occupation" required>
+        <option value="">Select</option>
+        <option value="Employee">Employee</option>
+        <option value="IT School Student">IT School Student</option>
+        <option value="College Student">College Student</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="iris">Upload Iris Scan Image:</label>
+      <input type="file" name="iris" accept="image/*" required />
+      <div class="guidance">
+        📸 Please upload a close-up image of your eye with good lighting.<br/>
+        Example: Clear focus, full iris visible, no blur.
+      </div>
+
+      <button type="submit" style="padding: 10px 25px; background-color: #28a745; color: white; border: none; border-radius: 5px;">
+        Submit
+      </button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("registerBtn").addEventListener("click", function () {
+      document.getElementById("formSection").style.display = "block";
+      document.getElementById("registerBtn").scrollIntoView({ behavior: "smooth" });
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+      const age = document.getElementById("age").value;
+      if (age < 18) {
+        alert("You must be at least 18 years old to register.");
+        e.preventDefault();
+      }
+    });
+
+    let generatedOTP = "";
+
+    function sendOTP() {
+      const phone = document.getElementById("phone").value;
+      if (!phone || phone.length < 10) {
+        alert("Enter a valid phone number.");
+        return;
+      }
+      generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+      alert("OTP sent (Prototype): " + generatedOTP);
+    }
+
+    function verifyOTP() {
+      const enteredOTP = document.getElementById("otp").value;
+      if (enteredOTP === generatedOTP) {
+        document.getElementById("otpStatus").textContent = "OTP Verified Successfully ✅";
+      } else {
+        document.getElementById("otpStatus").style.color = "red";
+        document.getElementById("otpStatus").textContent = "Incorrect OTP ❌";
+      }
+    }
+  </script>
+</body>
+</html>
